@@ -62,5 +62,10 @@ namespace DrawApp
             }
 
         }
+
+        public bool IsVoid
+        {
+            get { return startPos == endPos; }
+        }
     }
 }

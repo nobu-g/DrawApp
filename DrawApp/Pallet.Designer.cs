@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Pallet));
             this.circleButton = new System.Windows.Forms.Button();
             this.rectangleButton = new System.Windows.Forms.Button();
             this.lineButton = new System.Windows.Forms.Button();
@@ -94,6 +95,7 @@
             this.Controls.Add(this.rectangleButton);
             this.Controls.Add(this.circleButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = this.Size;
             this.MinimumSize = this.Size;
             this.Name = "Pallet";
