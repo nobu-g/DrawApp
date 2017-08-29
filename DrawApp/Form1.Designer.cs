@@ -80,12 +80,14 @@
             this.OpenMenu.Name = "OpenMenu";
             this.OpenMenu.Size = new System.Drawing.Size(223, 30);
             this.OpenMenu.Text = "開く";
+            this.OpenMenu.Click += new System.EventHandler(this.OpenMenuClicked);
             // 
             // SaveMenu
             // 
             this.SaveMenu.Name = "SaveMenu";
             this.SaveMenu.Size = new System.Drawing.Size(223, 30);
             this.SaveMenu.Text = "保存";
+            this.SaveMenu.Click += new System.EventHandler(this.SaveMenuClicked);
             // 
             // ExportMenu
             // 
@@ -106,7 +108,7 @@
             // 
             this.UndoMenu.Enabled = false;
             this.UndoMenu.Name = "UndoMenu";
-            this.UndoMenu.Size = new System.Drawing.Size(210, 30);
+            this.UndoMenu.Size = new System.Drawing.Size(161, 30);
             this.UndoMenu.Text = "元に戻す";
             this.UndoMenu.Click += new System.EventHandler(this.UndoMenuClicked);
             // 
@@ -114,7 +116,7 @@
             // 
             this.RedoMenu.Enabled = false;
             this.RedoMenu.Name = "RedoMenu";
-            this.RedoMenu.Size = new System.Drawing.Size(210, 30);
+            this.RedoMenu.Size = new System.Drawing.Size(161, 30);
             this.RedoMenu.Text = "やり直す";
             this.RedoMenu.Click += new System.EventHandler(this.RedoMenuClicked);
             // 
@@ -170,4 +172,3 @@
         private System.Windows.Forms.ToolStripMenuItem PalletWindowMenu;
     }
 }
-

@@ -9,12 +9,13 @@ using System.Windows.Forms;
 
 namespace DrawApp
 {
+    [Serializable]
     class Figure
     {
         int figureType;
         Point startPos, endPos;
         Color color;
-        Pen pen;
+        int penSize;
 
         public Point EndPos
         {
@@ -27,7 +28,7 @@ namespace DrawApp
             this.startPos = startPos;
             this.endPos = endPos;
             this.color = color;
-            this.pen = new Pen(color, penSize);
+            this.penSize = penSize;
         }
 
         public void Draw(PaintEventArgs e)
@@ -58,6 +59,8 @@ namespace DrawApp
 
             else if (figureType == 3)     // 直線を描画
             {
+                Pen pen = new Pen(color, penSize);
+
                 e.Graphics.DrawLine(pen, this.startPos.X, this.startPos.Y, this.endPos.X, this.endPos.Y);
             }
 

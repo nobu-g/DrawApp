@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DrawApp
 {
@@ -23,6 +26,12 @@ namespace DrawApp
             InitializeComponent();
             this.pallet = new Pallet();
             pallet.Show();
+
+            string[] commandLine = Environment.GetCommandLineArgs();
+            if(2 <= commandLine.Count())
+            {
+                OpenFile(commandLine[1]);
+            }
         }
 
         // ペイントイベントハンドラ
@@ -131,6 +140,80 @@ namespace DrawApp
             }
 
             pallet.Activate();
+        }
+
+        // 保存ボタン
+        private void SaveMenuClicked(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                FileName = "無題.fig",
+                Filter = "DrawAppファイル(*.fig)| *.fig",
+                Title = "保存先のファイルを選択してください",
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (Stream stream = saveFileDialog.OpenFile())
+                {
+                    if (stream != null)
+                    {
+                        using (var writer = new StreamWriter(stream))
+                        {
+                            var binaryFormatter = new BinaryFormatter();
+                            try
+                            {
+                                binaryFormatter.Serialize(stream, figures);
+                            }
+                            catch(SerializationException exp)
+                            {
+                                MessageBox.Show("保存に失敗しました\n" + exp.Message,
+                                    "エラー",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 開くボタン
+        private void OpenMenuClicked(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "DrawAppファイル (*.fig)|*.fig|すべてのファイル (*.*)|(*.*)"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                OpenFile(openFileDialog.FileName);
+            }
+        }
+
+        // ファイルを開く
+        private void OpenFile(string fileName)
+        {
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (var reader = new StreamReader(stream))
+            {
+                var binaryFormatter = new BinaryFormatter();
+                try
+                {
+                    figures = (List<Figure>)binaryFormatter.Deserialize(stream);
+                }
+                catch (SerializationException exp)
+                {
+                    MessageBox.Show("読み取りに失敗しました\n" + exp.Message,
+                        "エラー",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+
+                Invalidate();
+            }
         }
     }
 }
